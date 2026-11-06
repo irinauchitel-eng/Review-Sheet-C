@@ -1,0 +1,1430 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>C# מסכם י״א</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: exam-paper column, sticky progress strip, dark code panes inside light cards */
+:root{
+  --bg:#f2f4f8; --surface:#ffffff; --surface-2:#edf0f6; --ink:#17202f; --muted:#556074; --line:#d5dae4;
+  --accent:#2f45c4; --accent-soft:#e3e7fb;
+  --ok:#17784a; --ok-soft:#e0f3e8; --bad:#bd3627; --bad-soft:#fbe6e2; --warn:#9a5d00; --warn-soft:#fcf0d9;
+  --code-bg:#1b2130; --code-fg:#e2e6ee; --code-kw:#8fb2ff; --code-str:#f0c776; --code-num:#ff9f7a; --code-com:#7b859a; --code-type:#78d8c6; --code-line:#2a3245; --blank-bg:#2b3448;
+  --ui:"Segoe UI","Noto Sans Hebrew","Arial Hebrew",Arial,sans-serif;
+  --mono:"Cascadia Mono",Consolas,"SF Mono",Menlo,"Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10151f; --surface:#171d2a; --surface-2:#1e2535; --ink:#e5e8ef; --muted:#9aa3b6; --line:#2b3446;
+  --accent:#8e9dff; --accent-soft:#232b4e;
+  --ok:#4fca8c; --ok-soft:#163326; --bad:#ff7d6e; --bad-soft:#3a1e1b; --warn:#f0b452; --warn-soft:#382b14;
+  --code-bg:#0c1018; --code-fg:#e2e6ee; --code-kw:#8fb2ff; --code-str:#f0c776; --code-num:#ff9f7a; --code-com:#7b859a; --code-type:#78d8c6; --code-line:#1f2636; --blank-bg:#222a3c;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151f; --surface:#171d2a; --surface-2:#1e2535; --ink:#e5e8ef; --muted:#9aa3b6; --line:#2b3446;
+  --accent:#8e9dff; --accent-soft:#232b4e;
+  --ok:#4fca8c; --ok-soft:#163326; --bad:#ff7d6e; --bad-soft:#3a1e1b; --warn:#f0b452; --warn-soft:#382b14;
+  --code-bg:#0c1018; --code-fg:#e2e6ee; --code-kw:#8fb2ff; --code-str:#f0c776; --code-num:#ff9f7a; --code-com:#7b859a; --code-type:#78d8c6; --code-line:#1f2636; --blank-bg:#222a3c;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:16px;line-height:1.65}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.rtl{direction:rtl;text-align:right}
+.wrap{max-width:900px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{text-wrap:balance;line-height:1.25;margin:0}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* code — always LTR */
+pre,code,textarea.code-area,input.blank,.trace input,.ltr{direction:ltr!important;text-align:left!important;unicode-bidi:isolate}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:1px 6px;border-radius:4px;border:1px solid var(--line)}
+pre.code{margin:0;background:var(--code-bg);color:var(--code-fg);font-family:var(--mono);font-size:14px;line-height:1.7;padding:14px 16px;border-radius:8px;overflow-x:auto;tab-size:4;white-space:pre}
+pre.code .kw{color:var(--code-kw)} pre.code .st{color:var(--code-str)} pre.code .nu{color:var(--code-num)}
+pre.code .co{color:var(--code-com);font-style:italic} pre.code .ty{color:var(--code-type)}
+input.blank{font-family:var(--mono);font-size:14px;background:var(--blank-bg);color:var(--code-fg);border:1px dashed var(--code-com);border-radius:4px;padding:0 4px;margin:0 1px;height:1.6em;vertical-align:baseline}
+input.blank::placeholder{color:var(--code-com)}
+input.blank[data-state="ok"]{border:1px solid var(--ok);background:color-mix(in srgb,var(--ok) 22%,var(--blank-bg))}
+input.blank[data-state="bad"]{border:1px solid var(--bad);background:color-mix(in srgb,var(--bad) 22%,var(--blank-bg))}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding-block:10px}
+.top .name{font-weight:800;font-size:15px;white-space:nowrap}
+.meter{flex:1 1 200px;display:flex;align-items:center;gap:10px;min-width:0}
+.meter .bar{flex:1;height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.meter .fill{height:100%;width:0;background:var(--accent);transition:width .4s}
+.meter .pct{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;min-width:3.5em}
+.nav{display:flex;gap:6px;overflow-x:auto;width:100%;padding-bottom:2px;scrollbar-width:thin}
+.nav button{flex:none;font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:3px 11px;border-radius:99px;cursor:pointer}
+.nav button:hover{color:var(--accent);border-color:var(--accent)}
+
+.hero{padding-block:36px 8px}
+.eyebrow{font-size:13px;letter-spacing:.06em;color:var(--accent);font-weight:700}
+.hero h1{font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:-.01em;margin-top:6px}
+.hero h1 .ltr{display:inline-block}
+.hero .lead{color:var(--muted);max-width:62ch;margin-top:10px}
+.howto{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.howto div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14.5px;min-width:0}
+.howto b{display:block;margin-bottom:2px}
+
+/* coverage map */
+.cov{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.cov table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+.cov th,.cov td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right}
+.cov th{background:var(--surface-2);font-weight:700;font-size:12.5px;letter-spacing:.03em;color:var(--muted)}
+.cov tr:last-child td{border-bottom:0}
+.cov .refs span{display:inline-block;font-family:var(--mono);font-size:12px;background:var(--accent-soft);color:var(--accent);border-radius:4px;padding:0 6px;margin:2px 0 2px 4px}
+
+/* parts */
+section.part{padding-block:40px 0}
+.part-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:18px}
+.part-head .letter{font-weight:800;font-size:15px;color:var(--accent)}
+.part-head h2{font-size:24px;font-weight:800}
+.part-head p{color:var(--muted);font-size:14.5px;width:100%}
+.stack{display:flex;flex-direction:column;gap:18px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card h3{font-size:18px;font-weight:700}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lvl{font-size:12.5px;font-weight:700;padding:2px 10px;border-radius:99px}
+.lvl.b{background:var(--ok-soft);color:var(--ok)} .lvl.m{background:var(--warn-soft);color:var(--warn)} .lvl.a{background:var(--bad-soft);color:var(--bad)} .lvl.x{background:var(--accent);color:var(--surface)}
+.skill{font-size:12.5px;color:var(--muted);border:1px solid var(--line);padding:1px 9px;border-radius:99px}
+.skill::before{content:"מיומנות: ";color:var(--ink);font-weight:600}
+.q-num{font-weight:800;color:var(--accent);margin-left:6px}
+
+/* mcq */
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.opts button{font:inherit;text-align:right;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 12px;border-radius:8px;cursor:pointer;min-width:0}
+.opts button:hover{border-color:var(--accent)}
+.opts button .ltr{font-family:var(--mono);font-size:14px}
+.opts button.ok{background:var(--ok-soft);border-color:var(--ok)}
+.opts button.bad{background:var(--bad-soft);border-color:var(--bad);text-decoration:line-through;text-decoration-color:var(--bad)}
+.fb{border-radius:8px;padding:10px 14px;font-size:14.5px}
+.fb.ok{background:var(--ok-soft);border-inline-start:4px solid var(--ok)}
+.fb.bad{background:var(--bad-soft);border-inline-start:4px solid var(--bad)}
+
+/* trace table */
+.trace-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table.trace{border-collapse:collapse;width:100%;min-width:520px;font-variant-numeric:tabular-nums}
+table.trace th{background:var(--surface-2);font-family:var(--mono);font-size:13px;font-weight:600;padding:8px 6px;border:1px solid var(--line);direction:ltr}
+table.trace th.rowh,table.trace td.rowh{font-family:var(--ui);direction:rtl;color:var(--muted);font-size:13px;white-space:nowrap;padding:0 10px}
+table.trace td{border:1px solid var(--line);padding:3px;text-align:center}
+.trace input{width:100%;min-width:52px;font-family:var(--mono);font-size:14px;text-align:center!important;border:1px solid transparent;background:transparent;color:var(--ink);padding:5px 4px;border-radius:4px}
+.trace input:focus{border-color:var(--accent);background:var(--surface)}
+.trace input[readonly]{color:var(--muted);font-weight:600}
+input[data-state="ok"]{background:var(--ok-soft)!important;border-color:var(--ok)!important}
+input[data-state="bad"]{background:var(--bad-soft)!important;border-color:var(--bad)!important}
+.fieldrow{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.fieldrow label{font-weight:600;font-size:14.5px}
+.fieldrow input{font-family:var(--mono);font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 10px;border-radius:6px;width:180px;max-width:100%;direction:ltr;text-align:left}
+.note{font-size:13.5px;color:var(--muted)}
+
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--surface);padding:7px 16px;border-radius:7px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:hover{filter:brightness(1.08)}
+.result{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.result.ok{color:var(--ok)} .result.bad{color:var(--bad)}
+
+/* problems */
+.statement{display:flex;flex-direction:column;gap:8px}
+.statement ul,.statement ol{margin:0;padding-inline-start:22px;display:flex;flex-direction:column;gap:4px}
+.io{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.io table{border-collapse:collapse;width:100%;font-size:14px;min-width:380px}
+.io th,.io td{border-bottom:1px solid var(--line);padding:6px 10px;text-align:right}
+.io th{background:var(--surface-2);font-size:12.5px;color:var(--muted)}
+.io td.c{font-family:var(--mono);direction:ltr;text-align:left;white-space:pre}
+textarea{width:100%;min-height:150px;font-size:14px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface-2);color:var(--ink);resize:vertical}
+textarea.code-area{font-family:var(--mono);line-height:1.6}
+textarea.reflect-area{font-family:var(--ui);direction:rtl;text-align:right;min-height:120px}
+details{border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+details>summary{cursor:pointer;padding:9px 14px;font-weight:600;font-size:14.5px;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"◂";color:var(--accent);transition:transform .2s;display:inline-block}
+details[open]>summary::before{transform:rotate(-90deg)}
+details .inner{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+details.hint>summary{color:var(--warn)} details.sol>summary{color:var(--ok)}
+.copy{align-self:flex-start;font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:4px 12px;border-radius:6px;cursor:pointer}
+
+.subq{border-top:1px dashed var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.subq h4{margin:0;font-size:16px}
+.pts{font-size:12.5px;color:var(--muted);font-weight:600;margin-inline-start:6px}
+
+/* mistakes */
+.mist{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px}
+.mist .card{gap:10px}
+.mist .tag{font-size:12px;font-weight:700;color:var(--bad);letter-spacing:.03em}
+.mist .fix{display:flex;flex-direction:column;gap:8px;font-size:14.5px}
+.mist .fix b{color:var(--ok)}
+
+footer{padding-block:40px 48px;color:var(--muted);font-size:13.5px}
+.reset-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="rtl" dir="rtl" lang="he">
+
+<header class="top">
+  <div class="wrap">
+    <span class="name">C# · דף עבודה מסכם י״א</span>
+    <div class="meter" aria-label="התקדמות"><div class="bar"><div class="fill" id="pfill"></div></div><span class="pct" id="ppct">0%</span></div>
+    <nav class="nav" id="nav">
+      <button data-go="part-a">א · חזרה</button>
+      <button data-go="part-b">ב · טבלאות מעקב</button>
+      <button data-go="part-c">ג · השלמת קוד</button>
+      <button data-go="part-d">ד · כתיבת תוכניות</button>
+      <button data-go="part-e">ה · שאלת בגרות</button>
+      <button data-go="part-f">ו · טעויות נפוצות</button>
+      <button data-go="part-g">ז · בעיות אתגר</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="hero">
+  <div class="eyebrow">הכנה לבחינת הבגרות · שפת C#</div>
+  <h1>דף עבודה מסכם: מקלט ופלט ועד מחרוזות</h1>
+  <p class="lead">הדף משלב את כל הנושאים שנלמדו: קלט ופלט, פעולות חשבון, המחלקה <code>Math</code>, <code>Random</code>, תנאי פשוט ומורכב, לולאות <code>while</code> ו-<code>for</code>, מערך חד-ממדי ומחרוזות. כל תשובה שתכתבו נשמרת בדפדפן שלכם.</p>
+  <div class="howto">
+    <div><b>קודם על הדף</b>טבלת מעקב ממלאים בראש, בלי להריץ. ההרצה באה רק כדי לבדוק את עצמכם.</div>
+    <div><b>אחר כך ב-GDB</b>את התוכניות מחלק ד׳ וה׳ הריצו ב-<a href="https://www.onlinegdb.com/online_csharp_compiler" target="_blank" rel="noopener">GDB Online</a> (שפה: C#).</div>
+    <div><b>רמז לפני פתרון</b>נתקעתם? פתחו רמז. את הפתרון המלא פותחים רק אחרי ניסיון אמיתי.</div>
+  </div>
+  <div class="cov">
+    <table>
+      <thead><tr><th>נושא</th><th>איפה מתרגלים אותו בדף</th></tr></thead>
+      <tbody>
+        <tr><td>קלט ופלט</td><td class="refs"><span>ג1</span><span>ג3</span><span>ד1</span><span>ד3</span><span>ה</span><span>ז1</span><span>ז2</span><span>ז4</span></td></tr>
+        <tr><td>פעולות חשבון, <span class="ltr">/ %</span></td><td class="refs"><span>א1</span><span>ב1</span><span>ג1</span><span>ה</span><span>ז3</span><span>ז4</span></td></tr>
+        <tr><td>פונקציות Math</td><td class="refs"><span>א1</span><span>ד1</span><span>ד2</span><span>ה</span><span>ז1</span><span>ז3</span></td></tr>
+        <tr><td>Random</td><td class="refs"><span>א2</span><span>ג2</span><span>ד2</span><span>ה</span><span>ז3</span></td></tr>
+        <tr><td>תנאי פשוט ומורכב</td><td class="refs"><span>א3</span><span>ב1</span><span>ב2</span><span>ג2</span><span>ד1</span><span>ד3</span><span>ז1</span><span>ז2</span><span>ז3</span><span>ז4</span></td></tr>
+        <tr><td>לולאת while</td><td class="refs"><span>ב1</span><span>ג2</span><span>ג3</span><span>ד3</span><span>ה</span><span>ז1</span><span>ז3</span><span>ז4</span></td></tr>
+        <tr><td>לולאת for</td><td class="refs"><span>א4</span><span>ב2</span><span>ב3</span><span>ד2</span><span>ה</span><span>ז1</span><span>ז2</span><span>ז4</span></td></tr>
+        <tr><td>מערך חד-ממדי</td><td class="refs"><span>א4</span><span>ב2</span><span>ג3</span><span>ד2</span><span>ה</span><span>ז1</span><span>ז3</span><span>ז4</span></td></tr>
+        <tr><td>מחרוזות ותווים</td><td class="refs"><span>א5</span><span>ב3</span><span>ד3</span><span>ה</span><span>ז2</span><span>ז4</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ PART A ============ -->
+<section class="part" id="part-a">
+  <div class="part-head"><span class="letter">חלק א׳</span><h2>שאלות חזרה</h2><p>חמש שאלות קצרות. בכל אחת יש מלכודת אחת שבודקת הבנה ולא זיכרון. נסו לנמק לעצמכם לפני שאתם לוחצים.</p></div>
+  <div class="stack">
+
+    <div class="card mcq" id="q1" data-answer="b">
+      <div class="meta"><span class="skill">חילוק שלמים בתוך ביטוי, Math</span></div>
+      <p><span class="q-num">1.</span>מה יודפס?</p>
+      <script type="text/x-cs">
+double r = Math.Sqrt(17 / 4) + Math.Pow(2, 17 % 5);
+Console.WriteLine(r);
+      </script>
+      <div class="opts">
+        <button data-k="a"><span class="ltr">6.0615528...</span></button>
+        <button data-k="b"><span class="ltr">6</span></button>
+        <button data-k="c"><span class="ltr">10.0615528...</span></button>
+        <button data-k="d">שגיאת קומפילציה: Sqrt מקבלת רק double</button>
+      </div>
+      <div class="fb" hidden data-ok="<code>17 / 4</code> הוא חילוק שלמים ושווה 4, לכן <code>Math.Sqrt(4)</code> = 2. <code>17 % 5</code> = 2, ו-<code>Math.Pow(2, 2)</code> = 4. הסכום 6.0 מסוג double, ו-C# מדפיסה אותו כ-6. המרת int ל-double נעשית אוטומטית, לכן אין שגיאה." data-bad="בדקו מה הטיפוס של <code>17 / 4</code>. החלוקה מתבצעת לפני ש-Sqrt מקבלת את הערך."></div>
+    </div>
+
+    <div class="card mcq" id="q2" data-answer="c">
+      <div class="meta"><span class="skill">טווח Random, חשיבה על תחום ערכים</span></div>
+      <p><span class="q-num">2.</span>איזה ביטוי מגריל <b>מספר זוגי</b> בין 10 ל-20 (כולל שניהם), כשלכל זוגי יש סיכוי שווה? <span class="ltr"><code>Random rnd = new Random();</code></span></p>
+      <div class="opts">
+        <button data-k="a"><span class="ltr">rnd.Next(10, 21)</span></button>
+        <button data-k="b"><span class="ltr">rnd.Next(10, 20) * 2</span></button>
+        <button data-k="c"><span class="ltr">rnd.Next(5, 11) * 2</span></button>
+        <button data-k="d"><span class="ltr">rnd.Next(5, 10) * 2</span></button>
+      </div>
+      <div class="fb" hidden data-ok="<code>rnd.Next(5, 11)</code> מחזיר 5 עד 10 (הגבול העליון לא נכלל). כפול 2 נותן 10, 12, ... 20, כל אחד בסיכוי שווה. אפשרות ד׳ מפספסת את 20, ואפשרות ב׳ מגיעה עד 38." data-bad="זכרו: בגבול העליון של <code>Next</code> המספר עצמו לא מוגרל. חשבו מה הטווח לפני הכפל ומה אחריו."></div>
+    </div>
+
+    <div class="card mcq" id="q3" data-answer="c">
+      <div class="meta"><span class="skill">קדימות && לעומת ||, תנאי מורכב</span></div>
+      <p><span class="q-num">3.</span>המטרה: להדפיס <span class="ltr"><code>Yes</code></span> רק עבור מספר <b>דו-ספרתי</b> שמתחלק ב-3 או ב-7. התלמיד כתב את התנאי הבא. עבור איזה ערך של x התוכנית מדפיסה <span class="ltr"><code>Yes</code></span> למרות שלא הייתה צריכה?</p>
+      <script type="text/x-cs">
+if (x >= 10 && x <= 99 && x % 3 == 0 || x % 7 == 0)
+    Console.WriteLine("Yes");
+      </script>
+      <div class="opts">
+        <button data-k="a"><span class="ltr">21</span></button>
+        <button data-k="b"><span class="ltr">14</span></button>
+        <button data-k="c"><span class="ltr">7</span></button>
+        <button data-k="d"><span class="ltr">30</span></button>
+      </div>
+      <div class="fb" hidden data-ok="ל-<code>&&</code> קדימות גבוהה יותר מ-<code>||</code>. התנאי מתפרש כך: <span class='ltr'><code>(x>=10 && x<=99 && x%3==0) || x%7==0</code></span>. עבור 7 החלק הראשון שקר, אבל <code>7 % 7 == 0</code> אמת, ולכן מודפס Yes. התיקון: סוגריים סביב <span class='ltr'><code>(x % 3 == 0 || x % 7 == 0)</code></span>." data-bad="21, 14 ו-30 הם דו-ספרתיים שמתחלקים ב-3 או ב-7, כך שעבורם Yes נכון. חפשו ערך שאינו דו-ספרתי. מה מתבצע קודם, && או ||?"></div>
+    </div>
+
+    <div class="card mcq" id="q4" data-answer="b">
+      <div class="meta"><span class="skill">אינדקס לעומת ערך במערך</span></div>
+      <p><span class="q-num">4.</span>מה יודפס?</p>
+      <script type="text/x-cs">
+int[] a = { 3, 8, 1, 9, 4 };
+int k = 0;
+for (int i = 1; i < a.Length; i++)
+    if (a[i] > a[k])
+        k = i;
+Console.WriteLine(k);
+      </script>
+      <div class="opts">
+        <button data-k="a"><span class="ltr">9</span></button>
+        <button data-k="b"><span class="ltr">3</span></button>
+        <button data-k="c"><span class="ltr">4</span></button>
+        <button data-k="d"><span class="ltr">1</span></button>
+      </div>
+      <div class="fb" hidden data-ok="המשתנה k שומר את <b>מקום</b> האיבר הגדול ביותר, לא את ערכו. הערך המקסימלי הוא 9 והוא נמצא באינדקס 3. כדי להדפיס את הערך כותבים <code>a[k]</code>." data-bad="שימו לב מה נשמר ב-k: <code>k = i</code> ולא <code>k = a[i]</code>."></div>
+    </div>
+
+    <div class="card mcq" id="q5" data-answer="b">
+      <div class="meta"><span class="skill">char לעומת string בחיבור</span></div>
+      <p><span class="q-num">5.</span>מה יודפס? (קוד ASCII של <code>'T'</code> הוא 84)</p>
+      <script type="text/x-cs">
+string s = "BAGRUT";
+Console.WriteLine(s[s.Length - 1] + s.IndexOf('G'));
+      </script>
+      <div class="opts">
+        <button data-k="a"><span class="ltr">T2</span></button>
+        <button data-k="b"><span class="ltr">86</span></button>
+        <button data-k="c"><span class="ltr">T3</span></button>
+        <button data-k="d">שגיאת קומפילציה</button>
+      </div>
+      <div class="fb" hidden data-ok="<code>s[5]</code> הוא התו <code>'T'</code> מסוג char, ו-<code>IndexOf('G')</code> מחזיר int (2). חיבור char ו-int הוא חיבור מספרי: 84 + 2 = 86. כדי לקבל T2 צריך שאחד האופרנדים יהיה מחרוזת: <span class='ltr'><code>&quot;&quot; + s[5] + s.IndexOf('G')</code></span>." data-bad="מה הטיפוס של <code>s[5]</code>? ומה קורה כשמחברים אותו עם int, כשאין מחרוזת בביטוי?"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PART B ============ -->
+<section class="part" id="part-b">
+  <div class="part-head"><span class="letter">חלק ב׳</span><h2>טבלאות מעקב</h2><p>כמו בבחינה: עמודה לכל משתנה, עמודה לכל תנאי (true / false) ושורה לכל איטרציה. רשמו את ערכי המשתנים <b>בסוף</b> כל איטרציה, אלא אם כתוב אחרת בכותרת העמודה. לחצו "בדיקה" כדי לראות אילו תאים נכונים.</p></div>
+  <div class="stack">
+
+    <div class="card" id="t1card">
+      <div class="meta"><span class="lvl b">בסיסי</span><span class="skill">מעקב אחר while, פירוק מספר לספרות</span></div>
+      <h3>מעקב 1: ספרות זוגיות ואי-זוגיות</h3>
+      <script type="text/x-cs">
+int num = 5207;
+int sum = 0, count = 0;
+while (num > 0)
+{
+    int d = num % 10;
+    if (d % 2 == 1)
+        sum += d;
+    else
+        count++;
+    num = num / 10;
+}
+Console.WriteLine(sum + " " + count);
+      </script>
+      <p class="note">העמודה num מתארת את הערך <b>בתחילת</b> האיטרציה. שאר העמודות: הערך בסוף האיטרציה.</p>
+      <div class="trace-wrap"><table class="trace" data-trace="t1"></table></div>
+      <div class="fieldrow"><label for="t1-out">פלט:</label><input id="t1-out" data-expect="12 2" autocomplete="off"></div>
+      <div class="actions"><button class="btn" data-check="t1">בדיקה</button><button class="btn ghost" data-reveal="t1">הצג פתרון</button><span class="result" id="t1-res"></span></div>
+
+      <div class="subq mcq" id="t1q" data-answer="a">
+        <h4>שאלת הבנה</h4>
+        <p>עבור איזה ערך התחלתי של num יודפס <span class="ltr"><code>0 0</code></span>?</p>
+        <div class="opts">
+          <button data-k="a"><span class="ltr">0</span></button>
+          <button data-k="b"><span class="ltr">2468</span></button>
+          <button data-k="c"><span class="ltr">10</span></button>
+          <button data-k="d">אין ערך כזה</button>
+        </div>
+        <div class="fb" hidden data-ok="כש-num = 0 התנאי <code>num > 0</code> שקר כבר בבדיקה הראשונה, והלולאה לא מתבצעת אפילו פעם אחת. עבור 2468 יודפס <span class='ltr'>0 4</span>, ועבור 10 יודפס <span class='ltr'>1 1</span>." data-bad="נסו לחשוב על מקרה שבו גוף הלולאה לא מתבצע בכלל."></div>
+      </div>
+    </div>
+
+    <div class="card" id="t2card">
+      <div class="meta"><span class="lvl m">בינוני</span><span class="skill">for על מערך, שינוי המערך תוך כדי הלולאה</span></div>
+      <h3>מעקב 2: מערך שמשתנה בזמן הריצה</h3>
+      <script type="text/x-cs">
+int[] a = { 4, 9, 2, 7, 6 };
+int x = 0;
+for (int i = 0; i < a.Length - 1; i++)
+{
+    if (a[i] < a[i + 1])
+        x += a[i + 1] - a[i];
+    else
+        a[i + 1] = a[i];
+}
+Console.WriteLine(x + " " + a[4]);
+      </script>
+      <p class="note">בעמודות <span class="ltr">a[i]</span> ו-<span class="ltr">a[i+1]</span> רשמו את הערכים <b>לפני</b> ביצוע גוף הלולאה. העמודה x: הערך בסוף האיטרציה.</p>
+      <div class="trace-wrap"><table class="trace" data-trace="t2"></table></div>
+      <div class="fieldrow">
+        <label for="t2-arr">תוכן המערך בסוף:</label><input id="t2-arr" data-expect="4,9,9,9,9" data-kind="arr" placeholder="{ ... }" autocomplete="off">
+        <label for="t2-out">פלט:</label><input id="t2-out" data-expect="5 9" autocomplete="off">
+      </div>
+      <div class="actions"><button class="btn" data-check="t2">בדיקה</button><button class="btn ghost" data-reveal="t2">הצג פתרון</button><span class="result" id="t2-res"></span></div>
+
+      <div class="subq mcq" id="t2q" data-answer="b">
+        <h4>שאלת הבנה</h4>
+        <p>מחליפים את השורה <span class="ltr"><code>a[i + 1] = a[i];</code></span> בשורה <span class="ltr"><code>x -= a[i] - a[i + 1];</code></span> (המערך כבר לא משתנה). מה יודפס?</p>
+        <div class="opts">
+          <button data-k="a"><span class="ltr">5 9</span></button>
+          <button data-k="b"><span class="ltr">2 6</span></button>
+          <button data-k="c"><span class="ltr">-2 6</span></button>
+          <button data-k="d"><span class="ltr">2 9</span></button>
+        </div>
+        <div class="fb" hidden data-ok="עכשיו בכל איטרציה, בשני המקרים, x משתנה ב-<span class='ltr'><code>a[i+1] - a[i]</code></span>. הסכום מצטמצם ל-<span class='ltr'><code>a[4] - a[0]</code></span> = 6 − 4 = 2. המערך לא השתנה, לכן <code>a[4]</code> = 6. אפשר לזהות דפוס כזה בלי לעקוב צעד אחר צעד." data-bad="עקבו שוב: 4→9 (+5), 9→2 (−7), 2→7 (+5), 7→6 (−1). ומה ערכו של a[4] אם המערך לא משתנה?"></div>
+      </div>
+    </div>
+
+    <div class="card" id="t3card">
+      <div class="meta"><span class="lvl a">מתקדם</span><span class="skill">מעקב מחרוזות, זיהוי מטרת האלגוריתם, מקרי קצה</span></div>
+      <h3>מעקב 3: מה הקוד הזה עושה?</h3>
+      <script type="text/x-cs">
+string s = "ABBCCCD";
+string res = "";
+int cnt = 1;
+for (int i = 1; i < s.Length; i++)
+{
+    if (s[i] == s[i - 1])
+        cnt++;
+    else
+    {
+        res = res + s[i - 1] + cnt;
+        cnt = 1;
+    }
+}
+res = res + s[s.Length - 1] + cnt;
+Console.WriteLine(res);
+      </script>
+      <p class="note">בעמודות cnt ו-res רשמו את הערכים בסוף האיטרציה (גם אם לא השתנו). מחרוזת ריקה רשמו כ-<span class="ltr">""</span>.</p>
+      <div class="trace-wrap"><table class="trace" data-trace="t3"></table></div>
+      <div class="fieldrow"><label for="t3-out">פלט:</label><input id="t3-out" data-expect="A1B2C3D1" autocomplete="off"></div>
+      <div class="actions"><button class="btn" data-check="t3">בדיקה</button><button class="btn ghost" data-reveal="t3">הצג פתרון</button><span class="result" id="t3-res"></span></div>
+
+      <div class="subq mcq" id="t3q1" data-answer="c">
+        <h4>שאלת הבנה 1</h4>
+        <p>מה מבצע קטע הקוד, באופן כללי?</p>
+        <div class="opts">
+          <button data-k="a">סופר כמה אותיות שונות יש במחרוזת</button>
+          <button data-k="b">ממיין את אותיות המחרוזת</button>
+          <button data-k="c">דוחס רצפים של אותיות זהות: אות ואחריה אורך הרצף</button>
+          <button data-k="d">מדפיס כל אות ואת מיקומה במחרוזת</button>
+        </div>
+        <div class="fb" hidden data-ok="נכון. זו דחיסה של רצפים (Run-Length Encoding). שימו לב ש-<span class='ltr'><code>res + s[i-1] + cnt</code></span> מתחיל במחרוזת, ולכן כל החיבור הוא שרשור. השוו לשאלה 5 בחלק א׳, שם התקבל מספר." data-bad="הסתכלו על הפלט שקיבלתם בטבלה: A1B2C3D1. מה כל זוג מייצג?"></div>
+      </div>
+      <div class="subq mcq" id="t3q2" data-answer="c">
+        <h4>שאלת הבנה 2</h4>
+        <p>מה יקרה אם <span class="ltr"><code>s = ""</code></span> (מחרוזת ריקה)?</p>
+        <div class="opts">
+          <button data-k="a">יודפסה שורה ריקה</button>
+          <button data-k="b">יודפס <span class="ltr">1</span></button>
+          <button data-k="c">שגיאת ריצה (IndexOutOfRangeException)</button>
+          <button data-k="d">שגיאת קומפילציה</button>
+        </div>
+        <div class="fb" hidden data-ok="הלולאה לא תתבצע, אבל אחריה מתבצע <span class='ltr'><code>s[s.Length - 1]</code></span>, כלומר <code>s[-1]</code>. הקומפיילר לא יודע מה יהיה האורך, ולכן השגיאה מתגלה רק בזמן ריצה. תיקון: לעטוף את הקוד ב-<span class='ltr'><code>if (s.Length > 0)</code></span>." data-bad="הלולאה לא תתבצע. מה קורה בשורה שאחריה כש-s.Length הוא 0?"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PART C ============ -->
+<section class="part" id="part-c">
+  <div class="part-head"><span class="letter">חלק ג׳</span><h2>השלמת קוד</h2><p>השלימו את החסר בתיבות הממוספרות, כך שהתוכנית תעבוד לפי התיאור. כתבו בתחביר C# מדויק (אותיות גדולות וקטנות חשובות).</p></div>
+  <div class="stack">
+
+    <div class="card">
+      <div class="meta"><span class="lvl b">בסיסי</span><span class="skill">אופרטורים / ו-%, המרת יחידות</span></div>
+      <h3>ג1. שעון: שניות ל-שעות:דקות:שניות</h3>
+      <p>התוכנית קולטת מספר שלם של שניות ומדפיסה אותו בפורמט <span class="ltr">h:m:s</span>.</p>
+      <script type="text/x-cs" data-id="c1">
+int total = int.Parse(Console.ReadLine());
+int hours = total ⟦1⟧ 3600;
+int minutes = (total % 3600) ⟦2⟧ 60;
+int seconds = total ⟦3⟧ 60;
+Console.WriteLine(hours + ":" + minutes + ":" + seconds);
+      </script>
+      <div class="fieldrow"><label for="c1-b4">4. מה יודפס עבור הקלט 7384?</label><input id="c1-b4" class="blank-ext" autocomplete="off"></div>
+      <div class="actions"><button class="btn" data-cc="c1">בדיקה</button><button class="btn ghost" data-ccr="c1">הצג פתרון</button><span class="result" id="c1-res"></span></div>
+    </div>
+
+    <div class="card">
+      <div class="meta"><span class="lvl m">בינוני</span><span class="skill">Random, while עם תנאי מורכב, משתנה בוליאני</span></div>
+      <h3>ג2. משחק ניחושים</h3>
+      <p>המחשב מגריל מספר בין 1 ל-100 (כולל). למשתמש יש עד 7 ניסיונות. אחרי כל ניחוש שגוי מודפס רמז. הלולאה מסתיימת כשהמשתמש ניחש או כשנגמרו הניסיונות.</p>
+      <script type="text/x-cs" data-id="c2">
+Random rnd = new Random();
+int secret = rnd.Next(⟦1⟧, ⟦2⟧);
+int tries = 0;
+bool found = false;
+while (⟦3⟧ && tries < 7)
+{
+    int guess = int.Parse(Console.ReadLine());
+    tries++;
+    if (guess == secret)
+        found = true;
+    else if (guess ⟦4⟧ secret)
+        Console.WriteLine("Higher");
+    else
+        Console.WriteLine("Lower");
+}
+if (found)
+    Console.WriteLine("Got it in " + tries + " tries");
+else
+    Console.WriteLine("The number was " + secret);
+      </script>
+      <div class="actions"><button class="btn" data-cc="c2">בדיקה</button><button class="btn ghost" data-ccr="c2">הצג פתרון</button><span class="result" id="c2-res"></span></div>
+      <details class="hint"><summary>שאלה למחשבה</summary><div class="inner"><p>מה היה קורה אילו בתיבה 3 היה כתוב <span class="ltr"><code>found</code></span> במקום התשובה הנכונה? וכמה ניסיונות צריך במקרה הגרוע אם משחקים חכם (תמיד מנחשים באמצע הטווח)? למה 7 מספיק?</p></div></details>
+    </div>
+
+    <div class="card">
+      <div class="meta"><span class="lvl a">מתקדם</span><span class="skill">פירוק בעיה, עצירה מוקדמת של לולאה, אינדקסים</span></div>
+      <h3>ג3. האיבר ששווה לסכום כל מי שלפניו</h3>
+      <p>התוכנית קולטת 8 מספרים שלמים למערך, ומחפשת את האינדקס של <b>האיבר הראשון</b> (החל מאינדקס 1) ששווה לסכום כל האיברים שלפניו. אם אין כזה, מודפס ‎-1. החיפוש צריך להיפסק ברגע שנמצא איבר מתאים.</p>
+      <script type="text/x-cs" data-id="c3">
+int[] arr = new int[8];
+for (int i = 0; i < arr.Length; i++)
+    arr[i] = int.Parse(Console.ReadLine());
+
+int sum = ⟦1⟧;
+int index = -1;
+int k = ⟦2⟧;
+while (k < arr.Length && ⟦3⟧)
+{
+    if (arr[k] == sum)
+        index = ⟦4⟧;
+    sum ⟦5⟧ arr[k];
+    k++;
+}
+Console.WriteLine(index);
+      </script>
+      <div class="fieldrow"><label for="c3-b6">6. מה יודפס עבור הקלט <span class="ltr">2 4 1 7 14 3 3 3</span>?</label><input id="c3-b6" class="blank-ext" autocomplete="off"></div>
+      <div class="actions"><button class="btn" data-cc="c3">בדיקה</button><button class="btn ghost" data-ccr="c3">הצג פתרון</button><span class="result" id="c3-res"></span></div>
+      <details class="hint"><summary>שאלה למחשבה</summary><div class="inner"><p>אחרי שנמצא איבר מתאים, השורה <span class="ltr"><code>sum += arr[k]</code></span> עדיין מתבצעת פעם אחת. האם זה פוגע בתוצאה? נמקו.</p></div></details>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PART D ============ -->
+<section class="part" id="part-d">
+  <div class="part-head"><span class="letter">חלק ד׳</span><h2>בעיות מילוליות: כתיבת תוכניות</h2><p>לפני שכותבים: מה הקלט, מה הפלט, ואילו שלבים יש באמצע? כתבו את התוכנית בתיבה (היא נשמרת), הריצו ב-GDB ובדקו מול דוגמאות ההרצה.</p></div>
+  <div class="stack">
+
+    <div class="card">
+      <div class="meta"><span class="lvl b">בסיסי</span><span class="skill">קלט/פלט, חישוב, תנאי מורכב, בדיקת תקינות קלט</span></div>
+      <h3>ד1. מחיר נסיעה במונית</h3>
+      <div class="statement">
+        <p>כתבו תוכנית שקולטת מרחק נסיעה בק״מ (מספר ממשי) ושעת התחלה (מספר שלם 0–23), ומחשבת את מחיר הנסיעה:</p>
+        <ul>
+          <li>מחיר בסיס: 12 ₪, ועוד 2.4 ₪ לכל ק״מ.</li>
+          <li>בתעריף לילה (משעה 21 עד שעה 5 כולל) המחיר עולה ב-25%.</li>
+          <li>בנסיעה של יותר מ-30 ק״מ ניתנת הנחה של 10% על המחיר הסופי (אחרי תוספת הלילה).</li>
+          <li>אם המרחק אינו חיובי או שהשעה מחוץ לטווח, יודפס <span class="ltr"><code>Invalid input</code></span>.</li>
+        </ul>
+        <p>הדפיסו את המחיר מעוגל ל-2 ספרות אחרי הנקודה בעזרת <code>Math.Round</code>.</p>
+      </div>
+      <div class="io"><table><thead><tr><th>קלט (ק״מ, שעה)</th><th>פלט צפוי</th><th>מה הבדיקה בודקת</th></tr></thead><tbody>
+        <tr><td class="c">7, 14</td><td class="c">Price: 28.8 NIS</td><td>תעריף יום רגיל</td></tr>
+        <tr><td class="c">5.5, 3</td><td class="c">Price: 31.5 NIS</td><td>תעריף לילה אחרי חצות</td></tr>
+        <tr><td class="c">40, 22</td><td class="c">Price: 121.5 NIS</td><td>לילה והנחה יחד, וסדר החישוב</td></tr>
+        <tr><td class="c">10, 25</td><td class="c">Invalid input</td><td>קלט לא תקין</td></tr>
+      </tbody></table></div>
+      <textarea class="code-area" id="p1-code" placeholder="// write your program here" spellcheck="false"></textarea>
+      <details class="hint"><summary>רמז</summary><div class="inner"><p>שעות הלילה "חוצות" את חצות, ולכן אי אפשר לבדוק אותן עם <code>&&</code> בין שני גבולות. חשבו: השעה גדולה או שווה ל-21, <b>או</b> קטנה מ-6.</p></div></details>
+      <details class="sol"><summary>פתרון מלא</summary><div class="inner">
+        <script type="text/x-cs" data-copy="1">
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Distance (km): ");
+        double km = double.Parse(Console.ReadLine());
+        Console.Write("Hour (0-23): ");
+        int hour = int.Parse(Console.ReadLine());
+
+        if (km <= 0 || hour < 0 || hour > 23)
+        {
+            Console.WriteLine("Invalid input");
+        }
+        else
+        {
+            double price = 12 + km * 2.4;
+            if (hour >= 21 || hour < 6)
+                price = price * 1.25;
+            if (km > 30)
+                price = price * 0.9;
+            Console.WriteLine("Price: " + Math.Round(price, 2) + " NIS");
+        }
+    }
+}
+        </script>
+      </div></details>
+    </div>
+
+    <div class="card">
+      <div class="meta"><span class="lvl m">בינוני</span><span class="skill">מערך מונים, Random, for, Math.Round</span></div>
+      <h3>ד2. ניסוי הקוביות</h3>
+      <div class="statement">
+        <p>כתבו תוכנית שמדמה 1000 הטלות של <b>שתי</b> קוביות ומחשבת כמה פעמים התקבל כל סכום אפשרי (2 עד 12).</p>
+        <ol>
+          <li>שמרו את מספר ההופעות של כל סכום במערך, כך שהסכום עצמו הוא האינדקס.</li>
+          <li>הדפיסו לכל סכום את מספר ההופעות ואת האחוז שלו, מעוגל לספרה אחת אחרי הנקודה.</li>
+          <li>הדפיסו את הסכום שהופיע הכי הרבה פעמים (אם יש תיקו, הקטן מביניהם).</li>
+        </ol>
+        <p><b>אתגר נוסף:</b> הדפיסו ליד כל סכום כוכבית אחת על כל 10 הופעות, כך שייווצר תרשים עמודות בקונסול.</p>
+      </div>
+      <div class="io"><table><thead><tr><th>דוגמה לפלט (המספרים ישתנו בכל הרצה)</th></tr></thead><tbody>
+        <tr><td class="c">2: 29 (2.9%)
+3: 54 (5.4%)
+...
+7: 171 (17.1%)
+...
+12: 26 (2.6%)
+Most frequent sum: 7</td></tr>
+      </tbody></table></div>
+      <textarea class="code-area" id="p2-code" placeholder="// write your program here" spellcheck="false"></textarea>
+      <details class="hint"><summary>רמז</summary><div class="inner"><p>כמה תאים צריך במערך כדי שיהיה בו תא מספר 12? התאים 0 ו-1 פשוט לא ישמשו. לגבי האחוז: כמה זה <span class="ltr"><code>171 / 1000 * 100</code></span> ב-int? איך מתקנים?</p></div></details>
+      <details class="sol"><summary>פתרון מלא</summary><div class="inner">
+        <script type="text/x-cs" data-copy="1">
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Random rnd = new Random();
+        int rolls = 1000;
+        int[] counts = new int[13];   // index = sum (0 and 1 unused)
+
+        for (int i = 0; i < rolls; i++)
+        {
+            int sum = rnd.Next(1, 7) + rnd.Next(1, 7);
+            counts[sum]++;
+        }
+
+        int best = 2;
+        for (int s = 2; s <= 12; s++)
+        {
+            double pct = counts[s] * 100.0 / rolls;
+            Console.Write(s + ": " + counts[s] + " (" + Math.Round(pct, 1) + "%) ");
+            for (int j = 0; j < counts[s] / 10; j++)   // bonus: bar chart
+                Console.Write("*");
+            Console.WriteLine();
+            if (counts[s] > counts[best])
+                best = s;
+        }
+        Console.WriteLine("Most frequent sum: " + best);
+    }
+}
+        </script>
+        <p class="note">שאלה למחשבה: למה הסכום 7 כמעט תמיד מנצח? כמה צירופים של שתי קוביות נותנים 7, וכמה נותנים 2? (מתוך 36 צירופים אפשריים)</p>
+      </div></details>
+    </div>
+
+    <div class="card">
+      <div class="meta"><span class="lvl a">מתקדם</span><span class="skill">פירוק בעיה לתתי-משימות, סריקת מחרוזת, דגלים, while עם הגבלת ניסיונות</span></div>
+      <h3>ד3. בודק סיסמאות</h3>
+      <div class="statement">
+        <p>כתבו תוכנית שקולטת שם משתמש, ואחר כך קולטת סיסמה ובודקת אותה. סיסמה תקינה מקיימת את כל הכללים:</p>
+        <ul>
+          <li>אורכה לפחות 8 תווים.</li>
+          <li>יש בה לפחות אות גדולה אחת באנגלית (A–Z) ולפחות ספרה אחת.</li>
+          <li>אין בה רווחים.</li>
+          <li>היא לא מכילה את שם המשתמש, בלי הבדל בין אותיות גדולות לקטנות.</li>
+        </ul>
+        <p>על כל כלל שלא מתקיים מודפסת שורת שגיאה מתאימה (ייתכנו כמה שגיאות לאותה סיסמה). למשתמש יש עד 3 ניסיונות. בסיום מודפס <span class="ltr"><code>Password accepted after N attempt(s)</code></span> או <span class="ltr"><code>Account locked</code></span>.</p>
+        <p class="note">אל תשתמשו ב-<span class="ltr">char.IsUpper</span> וכדומה. בדקו טווחי תווים בעצמכם, למשל <span class="ltr"><code>ch >= 'A' && ch <= 'Z'</code></span>.</p>
+      </div>
+      <div class="io"><table><thead><tr><th>קלט</th><th>פלט צפוי</th></tr></thead><tbody>
+        <tr><td class="c">dana
+dana2024
+Hello World1
+Secure2026x</td><td class="c">- No uppercase letter
+- Contains the username
+- Contains a space
+Password accepted after 3 attempt(s)</td></tr>
+      </tbody></table></div>
+      <textarea class="code-area" id="p3-code" placeholder="// write your program here" spellcheck="false"></textarea>
+      <details class="hint"><summary>רמז 1: פירוק לשלבים</summary><div class="inner"><p>(1) לולאת ניסיונות חיצונית. (2) בתוכה: לולאת for אחת שעוברת על הסיסמה ומדליקה שלושה דגלים: hasUpper, hasDigit, hasSpace. (3) אחרי הסריקה: סדרת if נפרדים, לא else if, כי צריך לדווח על כל השגיאות.</p></div></details>
+      <details class="hint"><summary>רמז 2: שם המשתמש</summary><div class="inner"><p>המירו את שתי המחרוזות לאותיות קטנות עם <code>ToLower()</code>, ובדקו עם <code>IndexOf</code> אם אחת נמצאת בתוך השנייה. מה מחזירה IndexOf כשלא מוצאים?</p></div></details>
+      <details class="sol"><summary>פתרון מלא</summary><div class="inner">
+        <script type="text/x-cs" data-copy="1">
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Username: ");
+        string user = Console.ReadLine();
+
+        int attempts = 0;
+        bool ok = false;
+        while (!ok && attempts < 3)
+        {
+            Console.Write("Password: ");
+            string pass = Console.ReadLine();
+            attempts++;
+
+            bool hasUpper = false, hasDigit = false, hasSpace = false;
+            for (int i = 0; i < pass.Length; i++)
+            {
+                char ch = pass[i];
+                if (ch >= 'A' && ch <= 'Z')
+                    hasUpper = true;
+                else if (ch >= '0' && ch <= '9')
+                    hasDigit = true;
+                else if (ch == ' ')
+                    hasSpace = true;
+            }
+
+            int errors = 0;
+            if (pass.Length < 8) { Console.WriteLine("- Too short"); errors++; }
+            if (!hasUpper) { Console.WriteLine("- No uppercase letter"); errors++; }
+            if (!hasDigit) { Console.WriteLine("- No digit"); errors++; }
+            if (hasSpace) { Console.WriteLine("- Contains a space"); errors++; }
+            if (user.Length > 0 && pass.ToLower().IndexOf(user.ToLower()) != -1)
+            {
+                Console.WriteLine("- Contains the username");
+                errors++;
+            }
+
+            if (errors == 0)
+                ok = true;
+        }
+
+        if (ok)
+            Console.WriteLine("Password accepted after " + attempts + " attempt(s)");
+        else
+            Console.WriteLine("Account locked");
+    }
+}
+        </script>
+      </div></details>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PART E ============ -->
+<section class="part" id="part-e">
+  <div class="part-head"><span class="letter">חלק ה׳</span><h2>שאלת אתגר בסגנון בגרות</h2><p>ענו על כל הסעיפים בתוכנית אחת. שימו לב לניקוד: הוא רומז כמה עבודה כל סעיף דורש.</p></div>
+  <div class="card">
+    <div class="meta"><span class="lvl x">בגרות · 20 נק׳</span><span class="skill">שילוב כל הנושאים, פירוק בעיה, בדיקת קלט</span></div>
+    <h3>שאלה: מרוץ 3 ק״מ בבית הספר</h3>
+    <div class="statement">
+      <p>במרוץ השנתי משתתפים 20 רצים, ממוספרים מ-1 עד 20. כתבו תוכנית בשפת C# שמבצעת את הפעולות הבאות לפי הסדר:</p>
+    </div>
+
+    <div class="subq">
+      <h4>א. הגרלת הזמנים <span class="pts">(4 נק׳)</span></h4>
+      <p>הגדירו מערך <span class="ltr"><code>times</code></span> בגודל 20. הגרילו לכל רץ זמן ריצה בשניות, מספר שלם בין 600 ל-900 (כולל), ושמרו במערך. הזמן של רץ מספר <i>n</i> נשמר בתא <span class="ltr"><code>n - 1</code></span>.</p>
+    </div>
+    <div class="subq">
+      <h4>ב. הדפסה בפורמט דקות:שניות <span class="pts">(5 נק׳)</span></h4>
+      <p>הדפיסו לכל רץ את מספרו ואת זמנו בפורמט <span class="ltr">mm:ss</span>. אם מספר השניות חד-ספרתי, יש להוסיף 0 לפניו. לדוגמה: 754 שניות יודפסו <span class="ltr"><code>12:34</code></span>, ו-605 שניות יודפסו <span class="ltr"><code>10:05</code></span>.</p>
+    </div>
+    <div class="subq">
+      <h4>ג. ממוצע ורצים מהירים מהממוצע <span class="pts">(5 נק׳)</span></h4>
+      <p>חשבו והדפיסו את הזמן הממוצע בשניות, מעוגל ל-2 ספרות אחרי הנקודה. הדפיסו גם כמה רצים רצו <b>מהר יותר</b> מהממוצע (זמנם קטן מהממוצע).</p>
+    </div>
+    <div class="subq">
+      <h4>ד. חיפוש רץ לפי קוד <span class="pts">(6 נק׳)</span></h4>
+      <p>התוכנית קולטת מהמשתמש קוד רץ: האות R (גדולה או קטנה) ואחריה בדיוק שתי ספרות, לדוגמה <span class="ltr"><code>R07</code></span> או <span class="ltr"><code>r15</code></span>. קוד תקין מקיים את כל התנאים:</p>
+      <ul style="margin:0;padding-inline-start:22px">
+        <li>אורכו בדיוק 3 תווים, והתו הראשון הוא R או r.</li>
+        <li>שני התווים האחרונים הם ספרות.</li>
+        <li>המספר שהן יוצרות הוא בין 1 ל-20.</li>
+      </ul>
+      <p>כל עוד הקוד אינו תקין, יש להדפיס הודעת שגיאה ולקלוט קוד חדש. כשמתקבל קוד תקין, הדפיסו את זמן הרץ (בפורמט מסעיף ב) ואת <b>מקומו בדירוג</b>: 1 ועוד מספר הרצים שזמנם קטן משלו.</p>
+      <div class="io"><table><thead><tr><th>דוגמת הרצה לסעיף ד (הזמנים מוגרלים)</th></tr></thead><tbody>
+        <tr><td class="c">Enter runner code: R7
+Invalid code, try again
+Enter runner code: R25
+Invalid code, try again
+Enter runner code: r07
+Runner 7: 11:42, place 6</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <textarea class="code-area" id="bag-code" placeholder="// write your program here" spellcheck="false"></textarea>
+    <details class="hint"><summary>רמז לסעיף ב</summary><div class="inner"><p>דקות = זמן חלקי 60 (חילוק שלם). שניות = שארית החלוקה ב-60. את ה-0 המוביל מוסיפים עם תנאי: אם השניות קטנות מ-10, מחרוזת השניות היא <span class="ltr"><code>"0" + sec</code></span>.</p></div></details>
+    <details class="hint"><summary>רמז לסעיף ד</summary><div class="inner"><p>הסדר בתנאי חשוב: בדקו קודם את <span class="ltr"><code>code.Length == 3</code></span> ורק אחר כך גשו ל-<span class="ltr"><code>code[2]</code></span>. בזכות ההערכה המקוצרת של <code>&&</code>, אם האורך שגוי, האינדקס לא נבדק כלל. כדי להפוך תו-ספרה למספר: <span class="ltr"><code>code[1] - '0'</code></span>.</p></div></details>
+    <details class="sol"><summary>פתרון מלא ומחוון</summary><div class="inner">
+      <script type="text/x-cs" data-copy="1">
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Random rnd = new Random();
+        int[] times = new int[20];
+
+        // a. random times
+        for (int i = 0; i < times.Length; i++)
+            times[i] = rnd.Next(600, 901);
+
+        // b. print as mm:ss
+        for (int i = 0; i < times.Length; i++)
+        {
+            int min = times[i] / 60;
+            int sec = times[i] % 60;
+            string secStr = "" + sec;
+            if (sec < 10)
+                secStr = "0" + sec;
+            Console.WriteLine("Runner " + (i + 1) + ": " + min + ":" + secStr);
+        }
+
+        // c. average and count faster than average
+        int sum = 0;
+        for (int i = 0; i < times.Length; i++)
+            sum += times[i];
+        double avg = (double)sum / times.Length;
+        int faster = 0;
+        for (int i = 0; i < times.Length; i++)
+            if (times[i] < avg)
+                faster++;
+        Console.WriteLine("Average: " + Math.Round(avg, 2) + " sec");
+        Console.WriteLine("Faster than average: " + faster);
+
+        // d. search by runner code
+        bool valid = false;
+        int num = 0;
+        while (!valid)
+        {
+            Console.Write("Enter runner code: ");
+            string code = Console.ReadLine();
+            if (code.Length == 3 && (code[0] == 'R' || code[0] == 'r')
+                && code[1] >= '0' && code[1] <= '9'
+                && code[2] >= '0' && code[2] <= '9')
+            {
+                num = (code[1] - '0') * 10 + (code[2] - '0');
+                if (num >= 1 && num <= 20)
+                    valid = true;
+            }
+            if (!valid)
+                Console.WriteLine("Invalid code, try again");
+        }
+
+        int t = times[num - 1];
+        int place = 1;
+        for (int i = 0; i < times.Length; i++)
+            if (times[i] < t)
+                place++;
+
+        string s2 = "" + t % 60;
+        if (t % 60 < 10)
+            s2 = "0" + t % 60;
+        Console.WriteLine("Runner " + num + ": " + t / 60 + ":" + s2 + ", place " + place);
+    }
+}
+      </script>
+      <div class="io"><table><thead><tr><th>סעיף</th><th>מה בודקים</th><th>טעות שמורידה נקודות</th></tr></thead><tbody>
+        <tr><td>א</td><td>גבולות Next נכונים, לולאה על כל התאים</td><td><span class="ltr">Next(600, 900)</span> — הערך 900 לא יוגרל לעולם</td></tr>
+        <tr><td>ב</td><td>/ ו-% ב-60, 0 מוביל, מספר רץ i+1</td><td>הדפסת i במקום i+1; שכחת ה-0 המוביל</td></tr>
+        <tr><td>ג</td><td>ממוצע ממשי, ספירה במעבר נפרד</td><td><span class="ltr">sum / 20</span> בחילוק שלמים; ספירה לפני שהממוצע ידוע</td></tr>
+        <tr><td>ד</td><td>לולאת קלט חוזרת, סדר תנאים בטוח, המרת תו לספרה, חישוב דירוג</td><td>גישה ל-<span class="ltr">code[2]</span> לפני בדיקת אורך; המרה עם <span class="ltr">(int)code[1]</span> שנותנת 48–57</td></tr>
+      </tbody></table></div>
+    </div></details>
+  </div>
+</section>
+
+<!-- ============ PART F ============ -->
+<section class="part" id="part-f">
+  <div class="part-head"><span class="letter">חלק ו׳</span><h2>טעויות נפוצות</h2><p>בכל כרטיס יש קוד עם טעות אחת. מצאו אותה בעצמכם לפני שאתם פותחים את ההסבר.</p></div>
+  <div class="mist" id="mist"></div>
+</section>
+
+<!-- ============ PART G ============ -->
+<section class="part" id="part-g">
+  <div class="part-head"><span class="letter">חלק ז׳</span><h2>בעיות אתגר נוספות</h2><p>ארבע בעיות ברמה גבוהה. כל אחת דורשת כמה מעברים על הנתונים, ולכן כדאי לתכנן על דף לפני שכותבים קוד: אילו משתנים צריך, אילו לולאות, ובאיזה סדר.</p></div>
+  <div class="stack">
+
+    <div class="card">
+      <div class="meta"><span class="lvl a">מתקדם</span><span class="skill">פירוק בעיה, לולאת קלט עם בדיקת תקינות, מערך מונים, כמה מעברים על מערך</span></div>
+      <h3>ז1. ניתוח ציוני מבחן</h3>
+      <div class="statement">
+        <p>בכיתה 30 תלמידים. כתבו תוכנית שקולטת את ציוני התלמידים למערך ומבצעת:</p>
+        <ol>
+          <li>קליטת ציון בין 0 ל-100. כל עוד הציון לא תקין, מודפס <span class="ltr"><code>Invalid grade, try again</code></span> וקולטים מחדש.</li>
+          <li>הדפסת הממוצע (2 ספרות אחרי הנקודה) ומספר התלמידים שציונם <b>מעל</b> הממוצע.</li>
+          <li>הדפסת הציון הגבוה ביותר ו<b>מספרי כל התלמידים</b> שקיבלו אותו (תלמיד ראשון הוא מספר 1).</li>
+          <li>התפלגות לטווחים: 0–54 (נכשל), 55–69, 70–84, 85–100. השתמשו במערך מונים בגודל 4.</li>
+          <li>המורה נותנת פקטור כך שהציון הגבוה ביותר יהיה 100 (כל ציון עולה באותו מספר נקודות). הדפיסו את הפקטור ואת הממוצע החדש.</li>
+        </ol>
+        <p class="note">כדי לבדוק מהר, הגדירו <span class="ltr"><code>int n = 30;</code></span> והשתמשו ב-n בכל מקום. בזמן הבדיקה שנו אותו ל-5.</p>
+      </div>
+      <div class="io"><table><thead><tr><th>קלט (n = 5)</th><th>פלט צפוי</th></tr></thead><tbody>
+        <tr><td class="c">72
+105
+90
+48
+90
+61</td><td class="c">Invalid grade, try again
+Average: 72.2
+Above average: 2
+Highest: 90, students: 2 4
+0-54: 1
+55-69: 1
+70-84: 1
+85-100: 2
+Factor: 10, new average: 82.2</td></tr>
+      </tbody></table></div>
+      <textarea class="code-area" id="z1-code" placeholder="// write your program here" spellcheck="false"></textarea>
+      <details class="hint"><summary>רמז: כמה מעברים צריך?</summary><div class="inner"><p>את "מעל הממוצע" ואת "מי קיבל את המקסימום" אי אפשר לדעת בזמן הקליטה, כי הממוצע והמקסימום עוד לא ידועים. לכן: מעבר אחד לקליטה, לסכום ולמקסימום, ומעבר שני לכל השאר.</p></div></details>
+      <details class="hint"><summary>רמז: הממוצע אחרי הפקטור</summary><div class="inner"><p>אם כל ציון עולה ב-10 נקודות, בכמה עולה הממוצע? האם באמת צריך לולאה נוספת כדי לחשב אותו?</p></div></details>
+      <details class="sol"><summary>פתרון מלא</summary><div class="inner">
+        <script type="text/x-cs" data-copy="1">
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int n = 30;
+        int[] grades = new int[n];
+        int sum = 0, max = 0;
+
+        // pass 1: input, sum, max
+        for (int i = 0; i < n; i++)
+        {
+            int g = int.Parse(Console.ReadLine());
+            while (g < 0 || g > 100)
+            {
+                Console.WriteLine("Invalid grade, try again");
+                g = int.Parse(Console.ReadLine());
+            }
+            grades[i] = g;
+            sum += g;
+            if (g > max)
+                max = g;
+        }
+        double avg = (double)sum / n;
+
+        // pass 2: above average, students with max, ranges
+        int above = 0;
+        int[] ranges = new int[4];
+        string best = "";
+        for (int i = 0; i < n; i++)
+        {
+            if (grades[i] > avg)
+                above++;
+            if (grades[i] == max)
+                best = best + " " + (i + 1);
+
+            if (grades[i] < 55)
+                ranges[0]++;
+            else if (grades[i] < 70)
+                ranges[1]++;
+            else if (grades[i] < 85)
+                ranges[2]++;
+            else
+                ranges[3]++;
+        }
+
+        Console.WriteLine("Average: " + Math.Round(avg, 2));
+        Console.WriteLine("Above average: " + above);
+        Console.WriteLine("Highest: " + max + ", students:" + best);
+        Console.WriteLine("0-54: " + ranges[0]);
+        Console.WriteLine("55-69: " + ranges[1]);
+        Console.WriteLine("70-84: " + ranges[2]);
+        Console.WriteLine("85-100: " + ranges[3]);
+
+        int factor = 100 - max;
+        Console.WriteLine("Factor: " + factor + ", new average: " + Math.Round(avg + factor, 2));
+    }
+}
+        </script>
+      </div></details>
+    </div>
+
+    <div class="card">
+      <div class="meta"><span class="lvl a">מתקדם</span><span class="skill">סריקת מחרוזת תו-תו, זיהוי גבולות מילה, בניית מחרוזת, השוואה סימטרית</span></div>
+      <h3>ז2. ניתוח משפט</h3>
+      <div class="statement">
+        <p>כתבו תוכנית שקולטת משפט באנגלית. בין המילים יכול להיות רווח אחד או יותר, וגם בתחילת המשפט ובסופו. התוכנית מדפיסה:</p>
+        <ol>
+          <li>את מספר המילים במשפט.</li>
+          <li>את המילה הארוכה ביותר (אם יש כמה, את הראשונה).</li>
+          <li>את המילים בסדר הפוך, עם רווח אחד בדיוק בין כל שתי מילים.</li>
+          <li>האם המשפט הוא פלינדרום כשמתעלמים מרווחים ומהבדל בין אותיות גדולות לקטנות.</li>
+        </ol>
+        <p class="note">אסור להשתמש ב-<span class="ltr">Split</span>, <span class="ltr">Trim</span> או <span class="ltr">Reverse</span>. מותר: <span class="ltr">Length</span>, גישה לתו לפי אינדקס, <span class="ltr">ToLower</span> ו-<span class="ltr">Substring</span>.</p>
+      </div>
+      <div class="io"><table><thead><tr><th>קלט</th><th>פלט צפוי</th></tr></thead><tbody>
+        <tr><td class="c">  Never  odd or even </td><td class="c">Words: 4
+Longest: Never
+Reversed: even or odd Never
+Palindrome: yes</td></tr>
+        <tr><td class="c">C sharp is fun</td><td class="c">Words: 4
+Longest: sharp
+Reversed: fun is sharp C
+Palindrome: no</td></tr>
+      </tbody></table></div>
+      <textarea class="code-area" id="z2-code" placeholder="// write your program here" spellcheck="false"></textarea>
+      <details class="hint"><summary>רמז 1: איך יודעים שמילה הסתיימה?</summary><div class="inner"><p>בנו את המילה הנוכחית במשתנה <span class="ltr"><code>cur</code></span>, תו אחרי תו. כשמגיעים לרווח ו-cur לא ריק, מילה הסתיימה: מטפלים בה ומאפסים את cur. המילה האחרונה לא מסתיימת ברווח. איך תטפלו בה בלי לשכפל קוד? (נסו להריץ את הלולאה עד <span class="ltr"><code>i &lt;= s.Length</code></span>.)</p></div></details>
+      <details class="hint"><summary>רמז 2: סדר הפוך</summary><div class="inner"><p>אם כל מילה חדשה נכנסת <b>לפני</b> המחרוזת שכבר נבנתה, הסדר מתהפך מעצמו.</p></div></details>
+      <details class="sol"><summary>פתרון מלא</summary><div class="inner">
+        <script type="text/x-cs" data-copy="1">
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        string s = Console.ReadLine();
+        int words = 0;
+        string cur = "", longest = "", reversed = "";
+
+        // i == s.Length acts like a final space, so the last word is handled too
+        for (int i = 0; i <= s.Length; i++)
+        {
+            if (i < s.Length && s[i] != ' ')
+            {
+                cur += s[i];
+            }
+            else if (cur.Length > 0)
+            {
+                words++;
+                if (cur.Length > longest.Length)
+                    longest = cur;
+                if (reversed.Length == 0)
+                    reversed = cur;
+                else
+                    reversed = cur + " " + reversed;
+                cur = "";
+            }
+        }
+
+        // palindrome: remove spaces, ignore case
+        string low = s.ToLower();
+        string clean = "";
+        for (int i = 0; i < low.Length; i++)
+            if (low[i] != ' ')
+                clean += low[i];
+
+        bool pal = true;
+        for (int i = 0; i < clean.Length / 2 && pal; i++)
+            if (clean[i] != clean[clean.Length - 1 - i])
+                pal = false;
+
+        Console.WriteLine("Words: " + words);
+        Console.WriteLine("Longest: " + longest);
+        Console.WriteLine("Reversed: " + reversed);
+        if (pal)
+            Console.WriteLine("Palindrome: yes");
+        else
+            Console.WriteLine("Palindrome: no");
+    }
+}
+        </script>
+        <p class="note">שאלה למחשבה: למה הלולאה של בדיקת הפלינדרום רצה רק עד <span class="ltr">clean.Length / 2</span>? מה קורה לתו האמצעי באורך אי-זוגי?</p>
+      </div></details>
+    </div>
+
+    <div class="card">
+      <div class="meta"><span class="lvl a">מתקדם</span><span class="skill">סימולציה עם Random, while, מעקב אחר רצף, Math.Max, מערך מונים</span></div>
+      <h3>ז3. מסע הצב</h3>
+      <div class="statement">
+        <p>צב מתחיל במשבצת 0 במסלול שאורכו 50 משבצות. בכל תור הוא מטיל קובייה ומתקדם לפי התוצאה. כללי המשחק:</p>
+        <ul>
+          <li>אם הצב נוחת על משבצת שהיא כפולה של 7 (7, 14, 21...), זו מלכודת והוא חוזר 3 משבצות אחורה.</li>
+          <li>המשחק נגמר כשהצב מגיע למשבצת 50 או עובר אותה.</li>
+        </ul>
+        <p>הדפיסו בכל תור את תוצאת הקובייה ואת המשבצת שבה הצב נמצא בסוף התור. בסוף המשחק הדפיסו:</p>
+        <ol>
+          <li>מספר התורות ומספר הפעמים שהצב נפל במלכודת.</li>
+          <li>אורך הרצף הארוך ביותר של הטלות זהות ברציפות (למשל 4, 4, 4 הוא רצף באורך 3).</li>
+          <li>את כל המשבצות שבהן הצב סיים תור <b>יותר מפעם אחת</b>. השתמשו במערך מונים.</li>
+        </ol>
+      </div>
+      <div class="io"><table><thead><tr><th>דוגמה לפלט (ההטלות מוגרלות)</th></tr></thead><tbody>
+        <tr><td class="c">Turn 1: rolled 4 -> square 4
+Turn 2: rolled 3 -> square 4
+Turn 3: rolled 6 -> square 10
+...
+Turns: 17, traps: 3
+Longest streak: 2
+Visited more than once: 4 11</td></tr>
+      </tbody></table></div>
+      <textarea class="code-area" id="z3-code" placeholder="// write your program here" spellcheck="false"></textarea>
+      <details class="hint"><summary>רמז: רצף הטלות זהות</summary><div class="inner"><p>שמרו את ההטלה הקודמת במשתנה prev. אם ההטלה הנוכחית שווה לה, הרצף מתארך. אחרת, רצף חדש מתחיל באורך 1. אחרי כל הטלה עדכנו את הרצף הארוך ביותר עם <span class="ltr"><code>Math.Max</code></span>.</p></div></details>
+      <details class="sol"><summary>פתרון מלא</summary><div class="inner">
+        <script type="text/x-cs" data-copy="1">
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Random rnd = new Random();
+        int pos = 0, turns = 0, traps = 0;
+        int prev = 0, streak = 0, best = 0;
+        int[] visits = new int[50];
+
+        while (pos < 50)
+        {
+            int roll = rnd.Next(1, 7);
+            turns++;
+
+            if (roll == prev)
+                streak++;
+            else
+                streak = 1;
+            best = Math.Max(best, streak);
+            prev = roll;
+
+            pos += roll;
+            if (pos < 50 && pos % 7 == 0)
+            {
+                pos -= 3;
+                traps++;
+            }
+            if (pos < 50)
+                visits[pos]++;
+
+            Console.WriteLine("Turn " + turns + ": rolled " + roll + " -> square " + pos);
+        }
+
+        Console.WriteLine("Turns: " + turns + ", traps: " + traps);
+        Console.WriteLine("Longest streak: " + best);
+        Console.Write("Visited more than once:");
+        for (int i = 0; i < visits.Length; i++)
+            if (visits[i] > 1)
+                Console.Write(" " + i);
+        Console.WriteLine();
+    }
+}
+        </script>
+        <p class="note">שאלה למחשבה: האם ייתכן שהצב יסיים תור על משבצת שהיא כפולה של 7? מה יהיה תמיד ערכם של <span class="ltr">visits[7]</span>, <span class="ltr">visits[14]</span> וכו׳? נמקו בלי להריץ.</p>
+      </div></details>
+    </div>
+
+    <div class="card">
+      <div class="meta"><span class="lvl x">אתגר</span><span class="skill">חשבון תווים (char), שארית לסגירת מעגל, מערך תדירויות, הסקה מנתונים</span></div>
+      <h3>ז4. צופן קיסר ופריצתו</h3>
+      <div class="statement">
+        <p>בצופן קיסר מחליפים כל אות באות שנמצאת <i>key</i> מקומות אחריה באלפבית, ובסוף האלפבית חוזרים להתחלה. לדוגמה, עם מפתח 3: a→d, x→a, Z→C.</p>
+        <ol>
+          <li>קלטו הודעה באנגלית ומפתח שלם בין 1 ל-25 (כל עוד המפתח לא תקין, קלטו מחדש).</li>
+          <li>הצפינו את ההודעה: אותיות קטנות נשארות קטנות, גדולות נשארות גדולות, וכל תו אחר (רווח, ספרה, סימן) לא משתנה. הדפיסו את ההודעה המוצפנת.</li>
+          <li>פענחו את ההודעה המוצפנת והדפיסו אותה, כדי לוודא שחזרתם להודעה המקורית. רמז: הזזה ב-<span class="ltr">26 - key</span>.</li>
+          <li><b>פריצה:</b> באנגלית האות הנפוצה ביותר היא e. ספרו בעזרת מערך בגודל 26 כמה פעמים מופיעה כל אות בהודעה <b>המוצפנת</b> (בלי הבדל בין גדולה לקטנה). מצאו את האות הנפוצה, הניחו שהיא ההצפנה של e, והדפיסו את המפתח המשוער.</li>
+        </ol>
+      </div>
+      <div class="io"><table><thead><tr><th>קלט</th><th>פלט צפוי</th></tr></thead><tbody>
+        <tr><td class="c">meet me here
+3</td><td class="c">Encrypted: phhw ph khuh
+Decrypted: meet me here
+Most common letter: h
+Guessed key: 3</td></tr>
+        <tr><td class="c">Zebra Zoo!
+30
+2</td><td class="c">Invalid key, try again
+Encrypted: Bgdtc Bqq!
+Decrypted: Zebra Zoo!
+Most common letter: b
+Guessed key: 23</td></tr>
+      </tbody></table></div>
+      <textarea class="code-area" id="z4-code" placeholder="// write your program here" spellcheck="false"></textarea>
+      <details class="hint"><summary>רמז 1: הזזת אות</summary><div class="inner"><p>הפכו את האות למספר 0–25 עם <span class="ltr"><code>ch - 'a'</code></span>, הוסיפו את המפתח, קחו שארית ב-26, והחזירו לתו: <span class="ltr"><code>(char)(… + 'a')</code></span>. לאותיות גדולות אותו דבר עם <span class="ltr"><code>'A'</code></span>.</p></div></details>
+      <details class="hint"><summary>רמז 2: המפתח המשוער</summary><div class="inner"><p>אם האות הנפוצה נמצאת במקום m (0–25) ו-e נמצאת במקום 4, המפתח הוא ההפרש ביניהם. מה קורה כשההפרש שלילי? הוסיפו 26 לפני השארית.</p></div></details>
+      <details class="sol"><summary>פתרון מלא</summary><div class="inner">
+        <script type="text/x-cs" data-copy="1">
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        string msg = Console.ReadLine();
+        int key = int.Parse(Console.ReadLine());
+        while (key < 1 || key > 25)
+        {
+            Console.WriteLine("Invalid key, try again");
+            key = int.Parse(Console.ReadLine());
+        }
+
+        // encrypt
+        string enc = "";
+        for (int i = 0; i < msg.Length; i++)
+        {
+            char ch = msg[i];
+            if (ch >= 'a' && ch <= 'z')
+                ch = (char)((ch - 'a' + key) % 26 + 'a');
+            else if (ch >= 'A' && ch <= 'Z')
+                ch = (char)((ch - 'A' + key) % 26 + 'A');
+            enc += ch;
+        }
+        Console.WriteLine("Encrypted: " + enc);
+
+        // decrypt: shift by 26 - key
+        string dec = "";
+        int back = 26 - key;
+        for (int i = 0; i < enc.Length; i++)
+        {
+            char ch = enc[i];
+            if (ch >= 'a' && ch <= 'z')
+                ch = (char)((ch - 'a' + back) % 26 + 'a');
+            else if (ch >= 'A' && ch <= 'Z')
+                ch = (char)((ch - 'A' + back) % 26 + 'A');
+            dec += ch;
+        }
+        Console.WriteLine("Decrypted: " + dec);
+
+        // crack: letter frequency in the encrypted text
+        int[] freq = new int[26];
+        string low = enc.ToLower();
+        for (int i = 0; i < low.Length; i++)
+            if (low[i] >= 'a' && low[i] <= 'z')
+                freq[low[i] - 'a']++;
+
+        int m = 0;
+        for (int i = 1; i < 26; i++)
+            if (freq[i] > freq[m])
+                m = i;
+
+        int guess = (m - ('e' - 'a') + 26) % 26;
+        Console.WriteLine("Most common letter: " + (char)('a' + m));
+        Console.WriteLine("Guessed key: " + guess);
+    }
+}
+        </script>
+        <p class="note">בדוגמה השנייה המפתח המשוער (23) שגוי: בהודעה קצרה כמו "Zebra Zoo!" האות הנפוצה היא z ולא e. שאלה למחשבה: למה שיטת הפריצה עובדת טוב רק על טקסטים ארוכים? הציעו דרך לשפר אותה.</p>
+      </div></details>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>דף עבודה משלים להכנה לבגרות · כל התוכניות כתובות כיישומי קונסול ומתאימות להרצה ב-GDB Online.</p>
+  <div class="reset-row"><button class="btn ghost" id="resetBtn">איפוס כל התשובות</button><span class="note" id="resetNote"></span></div>
+</footer>
+
+</main>
+</div>
+
+<script>
+(function(){
+const KEY='cs11-summary-v1';
+let store={};
+try{store=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){store={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+
+/* ---------- C# highlighter ---------- */
+const KW=new Set('int double string char bool void static class using new if else while for return true false public const break'.split(' '));
+const TY=new Set('Console Math Random System Program'.split(' '));
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function dedent(t){
+  t=t.replace(/^\s*\n/,'').replace(/\s+$/,'');
+  const lines=t.split('\n');const ind=Math.min(...lines.filter(l=>l.trim()).map(l=>l.match(/^ */)[0].length));
+  return lines.map(l=>l.slice(ind)).join('\n');
+}
+function hl(src,id){
+  const re=/(⟦\d+⟧)|(\/\/[^\n]*)|("(?:[^"\\\n]|\\.)*")|('(?:[^'\\\n]|\\.)')|(\b\d+(?:\.\d+)?\b)|([A-Za-z_]\w*)/g;
+  let out='',last=0,m;
+  while((m=re.exec(src))){
+    out+=esc(src.slice(last,m.index));last=re.lastIndex;
+    if(m[1]){const n=m[1].slice(1,-1);out+=`<input class="blank" id="${id}-b${n}" placeholder="${n}" autocomplete="off" spellcheck="false" aria-label="תיבה ${n}">`;}
+    else if(m[2])out+=`<span class="co">${esc(m[2])}</span>`;
+    else if(m[3]||m[4])out+=`<span class="st">${esc(m[3]||m[4])}</span>`;
+    else if(m[5])out+=`<span class="nu">${m[5]}</span>`;
+    else if(KW.has(m[6]))out+=`<span class="kw">${m[6]}</span>`;
+    else if(TY.has(m[6]))out+=`<span class="ty">${m[6]}</span>`;
+    else out+=m[6];
+  }
+  return out+esc(src.slice(last));
+}
+document.querySelectorAll('script[type="text/x-cs"]').forEach(sc=>{
+  const raw=dedent(sc.textContent);
+  const pre=document.createElement('pre');pre.className='code';pre.dir='ltr';
+  pre.innerHTML=hl(raw,sc.dataset.id||'x');
+  sc.replaceWith(pre);
+  if(sc.dataset.copy){
+    const b=document.createElement('button');b.className='copy';b.type='button';b.textContent='העתקת הקוד';
+    b.addEventListener('click',()=>{
+      const done=()=>{b.textContent='הועתק';setTimeout(()=>b.textContent='העתקת הקוד',1500)};
+      const fallback=()=>{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='הקוד סומן, העתיקו עם Ctrl+C'};
+      try{navigator.clipboard.writeText(raw).then(done,fallback)}catch(e){fallback()}
+    });
+    pre.after(b);
+  }
+});
+
+/* ---------- normalization ---------- */
+const T=new Set(['true','t','אמת','כן','yes']),F=new Set(['false','f','שקר','לא','no']);
+function norm(v){
+  let s=(v||'').trim().replace(/\s+/g,' ');
+  if(s.length>=2&&/^["'].*["']$/.test(s))s=s.slice(1,-1);
+  const l=s.toLowerCase();
+  if(T.has(l))return'true';if(F.has(l))return'false';
+  return s;
+}
+const normArr=v=>(v||'').replace(/[\s{}\[\]]/g,'');
+const normCode=v=>(v||'').replace(/\s+/g,'').replace(/;$/,'');
+
+/* ---------- trace tables ---------- */
+const TR={
+  t1:{cols:['num','d','d % 2 == 1','sum','count'],given:[[0,0]],
+      rows:[['5207','7','true','7','0'],['520','0','false','7','1'],['52','2','false','7','2'],['5','5','true','12','2']]},
+  t2:{cols:['i','a[i]','a[i+1]','a[i] < a[i+1]','x'],givenCol:0,
+      rows:[['0','4','9','true','5'],['1','9','2','false','5'],['2','9','7','false','5'],['3','9','6','false','5']]},
+  t3:{cols:['i','s[i-1]','s[i]','s[i] == s[i-1]','cnt','res'],givenCol:0,
+      rows:[['1','A','B','false','1','A1'],['2','B','B','true','2','A1'],['3','B','C','false','1','A1B2'],['4','C','C','true','2','A1B2'],['5','C','C','true','3','A1B2'],['6','C','D','false','1','A1B2C3']]}
+};
+document.querySelectorAll('table[data-trace]').forEach(tb=>{
+  const id=tb.dataset.trace,d=TR[id];
+  let h='<thead><tr><th class="rowh">איטרציה</th>'+d.cols.map(c=>`<th>${esc(c)}</th>`).join('')+'</tr></thead><tbody>';
+  d.rows.forEach((r,ri)=>{
+    h+=`<tr><td class="rowh">${ri+1}</td>`;
+    r.forEach((v,ci)=>{
+      const given=(d.givenCol===ci)||(d.given||[]).some(g=>g[0]===ri&&g[1]===ci);
+      h+=`<td><input id="${id}-r${ri}c${ci}" data-expect="${esc(v)}" ${given?`value="${esc(v)}" readonly tabindex="-1"`:''} autocomplete="off" spellcheck="false" aria-label="${esc(d.cols[ci])}, איטרציה ${ri+1}"></td>`;
+    });
+    h+='</tr>';
+  });
+  tb.innerHTML=h+'</tbody>';
+});
+
+function traceFields(id){
+  const card=document.getElementById(id+'card');
+  return [...card.querySelectorAll('input[data-expect]')].filter(i=>!i.readOnly);
+}
+function checkField(inp){
+  const exp=inp.dataset.expect;
+  const ok=inp.dataset.kind==='arr'?normArr(inp.value)===normArr(exp):norm(inp.value)===norm(exp);
+  inp.dataset.state=ok?'ok':'bad';return ok;
+}
+function checkTrace(id,silent){
+  const fs=traceFields(id);let c=0;
+  fs.forEach(f=>{if(silent&&!f.value)return;if(checkField(f))c++});
+  const r=document.getElementById(id+'-res');
+  if(!silent||c){r.textContent=`${c} מתוך ${fs.length} נכונים`;r.className='result '+(c===fs.length?'ok':'bad');}
+  progress();
+}
+document.querySelectorAll('[data-check]').forEach(b=>b.addEventListener('click',()=>checkTrace(b.dataset.check)));
+document.querySelectorAll('[data-reveal]').forEach(b=>b.addEventListener('click',()=>{
+  const id=b.dataset.reveal;
+  traceFields(id).forEach(f=>{if(f.dataset.state!=='ok'){f.value=f.dataset.kind==='arr'?'{ '+f.dataset.expect.split(',').join(', ')+' }':f.dataset.expect;f.dataset.state='rev';f.style.background='var(--warn-soft)';store[f.id]=f.value}});
+  save();const r=document.getElementById(id+'-res');r.textContent='הפתרון מוצג. נסו להבין כל תא שהיה שגוי';r.className='result';progress();
+}));
+
+/* ---------- code completion ---------- */
+const CC={
+  c1:{b1:['/'],b2:['/'],b3:['%'],b4:['2:3:4']},
+  c2:{b1:['1'],b2:['101'],b3:['!found','found==false','false==found','!(found)'],b4:['<','<=']},
+  c3:{b1:['arr[0]'],b2:['1'],b3:['index==-1','index<0','-1==index','index<=-1'],b4:['k'],b5:['+='],b6:['3']}
+};
+function ccInputs(id){return Object.keys(CC[id]).map(b=>document.getElementById(id+'-'+b)).filter(Boolean)}
+function checkCC(id,silent){
+  let c=0,n=0;
+  for(const b in CC[id]){
+    const inp=document.getElementById(id+'-'+b);if(!inp)continue;n++;
+    if(silent&&!inp.value)continue;
+    const ok=CC[id][b].some(a=>normCode(a)===normCode(inp.value));
+    inp.dataset.state=ok?'ok':'bad';if(ok)c++;
+  }
+  const r=document.getElementById(id+'-res');
+  if(!silent||c){r.textContent=`${c} מתוך ${n} נכונים`;r.className='result '+(c===n?'ok':'bad');}
+  progress();
+}
+document.querySelectorAll('[data-cc]').forEach(b=>b.addEventListener('click',()=>checkCC(b.dataset.cc)));
+document.querySelectorAll('[data-ccr]').forEach(b=>b.addEventListener('click',()=>{
+  const id=b.dataset.ccr;
+  for(const k in CC[id]){const inp=document.getElementById(id+'-'+k);if(inp&&inp.dataset.state!=='ok'){inp.value=CC[id][k][0];inp.dataset.state='rev';store[inp.id]=inp.value}}
+  save();const r=document.getElementById(id+'-res');r.textContent='הפתרון מוצג';r.className='result';progress();
+}));
+document.querySelectorAll('input.blank,input.blank-ext').forEach(i=>{
+  if(i.classList.contains('blank'))i.size=Math.max(3,Math.max(...(CC[i.id.split('-')[0]]?.[i.id.split('-')[1]]||['xx']).map(a=>a.length))+2);
+  if(i.classList.contains('blank-ext')){i.style.fontFamily='var(--mono)';}
+});
+
+/* ---------- MCQ ---------- */
+store.mcq=store.mcq||{};
+document.querySelectorAll('.mcq').forEach(q=>{
+  const fb=q.querySelector('.fb');let wrong=0;
+  const btns=q.querySelectorAll('.opts button');
+  function mark(k,silent){
+    const b=q.querySelector(`.opts button[data-k="${k}"]`);
+    if(k===q.dataset.answer){
+      btns.forEach(x=>x.disabled=true);b.classList.add('ok');
+      fb.innerHTML='<b>נכון.</b> '+fb.dataset.ok;fb.className='fb ok';fb.hidden=false;
+      q.dataset.done='1';store.mcq[q.id]=k;if(!silent)save();
+    }else{
+      b.classList.add('bad');wrong++;
+      fb.innerHTML='<b>לא בדיוק.</b> '+fb.dataset.bad+(wrong>=2?'':' נסו שוב.');fb.className='fb bad';fb.hidden=false;
+    }
+    progress();
+  }
+  btns.forEach(b=>{b.type='button';b.addEventListener('click',()=>mark(b.dataset.k))});
+  if(store.mcq[q.id])mark(store.mcq[q.id],true);
+});
+
+/* ---------- common mistakes ---------- */
+const MI=[
+ {t:'חילוק שלמים',c:'int sum = 47, count = 5;\ndouble avg = sum / count;\nConsole.WriteLine(avg);   // expected 9.4',
+  f:'יודפס 9: החילוק מתבצע בין שני int <b>לפני</b> ההשמה ל-double. התיקון: <span class="ltr"><code>(double)sum / count</code></span> או <span class="ltr"><code>sum * 1.0 / count</code></span>.'},
+ {t:'גבול עליון של Random',c:'Random rnd = new Random();\nint die = rnd.Next(1, 6);   // a die: 1..6',
+  f:'הגבול העליון ב-<code>Next</code> לא נכלל, כך שהקוביה לעולם לא תראה 6. התיקון: <span class="ltr"><code>rnd.Next(1, 7)</code></span>.'},
+ {t:'השמה במקום השוואה',c:'bool found = false;\n// ...\nif (found = true)\n    Console.WriteLine("Found!");',
+  f:'<code>=</code> היא השמה: found מקבל true, והתנאי תמיד מתקיים. עבור bool זה עובר קומפילציה, ולכן הטעות מסוכנת. התיקון: <span class="ltr"><code>if (found)</code></span> או <span class="ltr"><code>if (found == true)</code></span>.'},
+ {t:'חריגה מגבולות המערך',c:'int[] arr = new int[5];\nfor (int i = 0; i <= arr.Length; i++)\n    arr[i] = i * 2;',
+  f:'האינדקסים הם 0 עד 4. כש-i = 5 מתקבלת שגיאת ריצה IndexOutOfRangeException. התיקון: <span class="ltr"><code>i &lt; arr.Length</code></span>.'},
+ {t:'חיבור תווים',c:'string w = "CODE";\nConsole.WriteLine(w[0] + w[1]);   // expected "CO"',
+  f:'שני char מתחברים כמספרים: 67 + 79 = 146. התיקון: <span class="ltr"><code>"" + w[0] + w[1]</code></span> או <span class="ltr"><code>w.Substring(0, 2)</code></span>.'},
+ {t:'לולאה אינסופית',c:'int n = 345, sum = 0;\nwhile (n > 0)\n{\n    sum += n % 10;\n}',
+  f:'n לא משתנה בתוך הלולאה, ולכן התנאי נשאר אמת לנצח. חסרה השורה <span class="ltr"><code>n = n / 10;</code></span>. בכל while שאלו: מה מקרב אותי לסיום?'},
+ {t:'נקודה-פסיק מיותרת',c:'int count = 0;\nfor (int i = 0; i < 10; i++);\n{\n    count++;\n}\nConsole.WriteLine(count);   // prints 1',
+  f:'ה-<code>;</code> אחרי ה-for היא גוף לולאה ריק. הבלוק שאחריו מתבצע פעם אחת בלבד. אותה טעות קורית גם אחרי <span class="ltr"><code>if (...);</code></span>.'},
+ {t:'תנאי טווח',c:'int x = int.Parse(Console.ReadLine());\nif (10 < x < 20)\n    Console.WriteLine("In range");',
+  f:'C# לא מאפשרת השוואה כפולה כמו במתמטיקה, וזו שגיאת קומפילציה. כותבים כל השוואה בנפרד: <span class="ltr"><code>x &gt; 10 &amp;&amp; x &lt; 20</code></span>.'},
+ {t:'מחרוזת אי אפשר לשנות',c:'string name = "dana";\nname[0] = \'D\';',
+  f:'מחרוזת ב-C# היא immutable, כלומר אי אפשר לשנות תו בודד. זו שגיאת קומפילציה. בונים מחרוזת חדשה: <span class="ltr"><code>name = "D" + name.Substring(1);</code></span>.'},
+ {t:'השוואת מחרוזות ואותיות גדולות',c:'string ans = Console.ReadLine();   // user types "Yes"\nif (ans == "yes")\n    Console.WriteLine("OK");',
+  f:'ההשוואה רגישה לאותיות גדולות וקטנות, ולכן "Yes" ≠ "yes". התיקון: <span class="ltr"><code>ans.ToLower() == "yes"</code></span>.'}
+];
+const mist=document.getElementById('mist');
+MI.forEach((m,i)=>{
+  const c=document.createElement('div');c.className='card';
+  c.innerHTML=`<span class="tag">טעות ${i+1} · ${m.t}</span><pre class="code" dir="ltr">${hl(m.c,'m')}</pre><details><summary>מה הבעיה ואיך מתקנים?</summary><div class="inner fix"><p>${m.f}</p></div></details>`;
+  mist.appendChild(c);
+});
+
+/* ---------- persistence for inputs & textareas ---------- */
+document.querySelectorAll('input[id]:not([readonly]),textarea[id]').forEach(el=>{
+  if(store[el.id]!=null)el.value=store[el.id];
+  el.addEventListener('input',()=>{store[el.id]=el.value;save();if(el.dataset.state){delete el.dataset.state;el.style.background=''}});
+});
+['t1','t2','t3'].forEach(id=>checkTrace(id,true));
+['c1','c2','c3'].forEach(id=>checkCC(id,true));
+
+/* ---------- progress ---------- */
+function progress(){
+  const mc=document.querySelectorAll('.mcq');const mcOk=[...mc].filter(q=>q.dataset.done).length;
+  const fields=[...document.querySelectorAll('.trace input:not([readonly]),.fieldrow input[data-expect],input.blank,input.blank-ext')];
+  const fOk=fields.filter(f=>f.dataset.state==='ok').length;
+  const tot=mc.length+fields.length,done=mcOk+fOk;
+  const p=tot?Math.round(done/tot*100):0;
+  const fill=document.getElementById('pfill'),pct=document.getElementById('ppct');
+  if(fill)fill.style.width=p+'%';if(pct)pct.textContent=p+'%';
+}
+progress();
+
+/* ---------- nav ---------- */
+document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{
+  const t=document.getElementById(b.dataset.go);if(!t)return;
+  const off=document.querySelector('.top').offsetHeight+8;
+  window.scrollTo({top:t.getBoundingClientRect().top+scrollY-off,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}));
+
+/* ---------- reset with in-page confirm ---------- */
+const rb=document.getElementById('resetBtn'),rn=document.getElementById('resetNote');let armed=false,tmr;
+rb.addEventListener('click',()=>{
+  if(!armed){armed=true;rb.textContent='לחצו שוב כדי לאשר';rn.textContent='כל התשובות והקוד שכתבתם יימחקו.';tmr=setTimeout(()=>{armed=false;rb.textContent='איפוס כל התשובות';rn.textContent=''},4000);return}
+  clearTimeout(tmr);store={};try{localStorage.removeItem(KEY)}catch(e){}location.reload();
+});
+})();
+</script>
+
+</body></html>
